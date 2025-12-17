@@ -6,3 +6,4 @@
 2. entity
 3. components
 4. pipelines
+5. main file(endpoint)
