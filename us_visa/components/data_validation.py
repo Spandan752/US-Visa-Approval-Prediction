@@ -13,10 +13,10 @@ from us_visa.utlis.main_utils import read_yaml_file, write_yaml_file
 
 
 class DataValidation:
-    def __init__(self, DataIngestionArtifact, DataValidationConfig):
+    def __init__(self, data_ingestion_artifact: DataIngestionArtifact, data_validation_config: DataValidationConfig):
         try:
-            self.data_ingestion_artifact = DataIngestionArtifact
-            self.data_validation_config = DataValidationConfig
+            self.data_ingestion_artifact = data_ingestion_artifact
+            self.data_validation_config = data_validation_config
             self._schema_config = read_yaml_file(file_path=SCHEMA_FILE_PATH)
         except Exception as e:
             raise CustomException(e, sys)
@@ -52,6 +52,13 @@ class DataValidation:
             return False if len(missing_categorical_columns)>0 and len(missing_numerical_columns)>0 else True
         except Exception as e:
             raise CustomException(e, sys)
+    
+    @staticmethod
+    def read_data(file_path) -> DataFrame:
+        try:
+            return pd.read_csv(file_path)
+        except Exception as e:
+            raise CustomException(e, sys)
         
     def detect_dataset_drift(self, reference_df: DataFrame, current_df: DataFrame) -> bool:
         try:
@@ -60,7 +67,7 @@ class DataValidation:
             report = data_drift_profile.json()
             json_report = json.loads(report)
 
-            write_yaml_file(file_path=self.data_validation_config.drif_report_file_path, content=json_report)
+            write_yaml_file(file_path=self.data_validation_config.drift_report_file_path, content=json_report)
 
             n_features = json_report["data_drift"]["data"]["metrics"]["n_features"]
             n_drifted_features = json_report["data_drift"]["data"]["metrics"]["n_drifted_features"]
@@ -87,11 +94,11 @@ class DataValidation:
             if not req_columns_status:
                 validation_error_msg += f"Columns are missing in test df."
             
-            status = self.is_column_exist(df=train_df)
+            status = self.is_column_exist(dataframe=train_df)
             if not status:
                 validation_error_msg += f"Columns are missing in training df."
             
-            status = self.is_column_exist(df=test_df)
+            status = self.is_column_exist(dataframe=test_df)
             if not status:
                 validation_error_msg += f"Columns are missing in testing df."
 
