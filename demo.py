@@ -10,6 +10,8 @@
 #     raise CustomException(e, sys)
 
 from us_visa.pipelines.training_pipeline import TrainingPipeline
-
+import os
 obj = TrainingPipeline()
 obj.run_pipeline()
+
+

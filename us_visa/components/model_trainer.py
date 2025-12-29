@@ -19,7 +19,7 @@ class ModelTrainer:
         self.data_tranformation_artifact = data_transformation_artifact
         self.model_trainer_config = model_trainer_config
 
-    def get_model_object_and_report(self, train:np.array, test: np.array) -> Tuple[object, object]:
+    def get_model_object_and_report(self, train: np.array, test: np.array) -> Tuple[object, object]:
         try:
             model_factory = ModelFactory(model_config_path=self.model_trainer_config.model_config_file_path)
 
