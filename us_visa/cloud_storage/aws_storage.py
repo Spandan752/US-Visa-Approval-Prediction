@@ -13,8 +13,8 @@ from us_visa.configuration.aws_connection import S3Client
 class SimpleStorageService:
     def __init__(self):
         s3_client = S3Client()
-        self.s3_client = s3_client.s3_client
         self.s3_resource = s3_client.s3_resource
+        self.s3_client = s3_client.s3_client
 
     def s3_key_path_available(self, bucket_name, s3_key) -> bool:
         try:
