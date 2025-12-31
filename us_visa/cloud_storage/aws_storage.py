@@ -29,14 +29,6 @@ class SimpleStorageService:
             raise CustomException(e, sys)
         
     @staticmethod
-    def get_bucket(self, bucket_name: str) -> Bucket:
-        try:
-            bucket = self.s3_resource.Bucket(bucket_name)
-            return bucket
-        except Exception as e:
-            raise CustomException(e, sys) from e
-        
-
     def read_object(object_name: str, decode: bool = True, make_readable: bool = False) -> Union[StringIO, str]:
         try:
             func = (
@@ -50,8 +42,15 @@ class SimpleStorageService:
 
         except Exception as e:
             raise CustomException(e, sys) from e
-        
-    def get_file_object( self, filename: str, bucket_name: str) -> Union[List[object], object]:
+
+    def get_bucket(self, bucket_name: str) -> Bucket:
+        try:
+            bucket = self.s3_resource.Bucket(bucket_name)
+            return bucket
+        except Exception as e:
+            raise CustomException(e, sys) from e    
+      
+    def get_file_object(self, filename: str, bucket_name: str) -> Union[List[object], object]:
         try:
             bucket = self.get_bucket(bucket_name)
 
